@@ -5,7 +5,6 @@ require('dotenv').config()
 const Note = require('./models/note')
 
 // Middleware para servir archivos estáticos desde el directorio 'dist'
-// Middleware para servir archivos estáticos desde el directorio 'dist'
 app.use(express.static('dist'))
 
 // Middleware para habilitar CORS
@@ -15,10 +14,6 @@ app.use(cors())
 // Middleware para analizar solicitudes JSON
 app.use(express.json())
 
-// Middleware para registrar solicitudes
-// Middleware para habilitar CORS
-const cors = require('cors')
-app.use(cors())
 
 // Middleware para analizar solicitudes JSON
 app.use(express.json())
@@ -33,8 +28,6 @@ const requestLogger = (request, response, next) => {
 }
 app.use(requestLogger)
 
-// Rutas
-// Rutas
 app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>')
 })
@@ -76,9 +69,8 @@ app.get('/api/notes/:id', (request, response, next) => {
 
 // Nueva ruta para actualizar la importancia de una nota
 app.put('/api/notes/:id', (request, response, next) => {
-  const { content, important } = request.body
-  
-  Note.findByIdAndUpdate(request.params.id, {content, important}, { new: true, runValidators:true,context:"query" })
+  const { content, important } = request.body  
+  Note.findByIdAndUpdate(request.params.id, {content, important}, { new: true, runValidators:true,context:'query' })
     .then(updatedNote => {
       response.json(updatedNote)
     })
@@ -96,10 +88,7 @@ app.delete('/api/notes/:id', (request, response) => {
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
 }
-// Middleware para manejar rutas desconocidas
-const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: 'unknown endpoint' })
-}
+
 app.use(unknownEndpoint)
 
 // Middleware para manejar errores
@@ -107,7 +96,7 @@ const errorHandler = (error, request, response, next) => {
   console.error(error.message)
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' })
-  } else if (error.name === "ValidationError") {
+  } else if (error.name === 'ValidationError') {
     return response.status(400).json({error: error.message})
   }
   next(error)
