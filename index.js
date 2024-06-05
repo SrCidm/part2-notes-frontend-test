@@ -96,10 +96,7 @@ app.delete('/api/notes/:id', (request, response) => {
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
 }
-// Middleware para manejar rutas desconocidas
-const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: 'unknown endpoint' })
-}
+
 app.use(unknownEndpoint)
 
 // Middleware para manejar errores
