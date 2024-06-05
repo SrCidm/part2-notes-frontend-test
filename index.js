@@ -5,8 +5,17 @@ require('dotenv').config()
 const Note = require('./models/note')
 
 // Middleware para servir archivos estáticos desde el directorio 'dist'
+// Middleware para servir archivos estáticos desde el directorio 'dist'
 app.use(express.static('dist'))
 
+// Middleware para habilitar CORS
+const cors = require('cors')
+app.use(cors())
+
+// Middleware para analizar solicitudes JSON
+app.use(express.json())
+
+// Middleware para registrar solicitudes
 // Middleware para habilitar CORS
 const cors = require('cors')
 app.use(cors())
@@ -24,6 +33,7 @@ const requestLogger = (request, response, next) => {
 }
 app.use(requestLogger)
 
+// Rutas
 // Rutas
 app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>')
@@ -82,6 +92,10 @@ app.delete('/api/notes/:id', (request, response) => {
   response.status(204).end()
 })
 
+// Middleware para manejar rutas desconocidas
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
 // Middleware para manejar rutas desconocidas
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
